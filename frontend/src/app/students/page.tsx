@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Search, Plus, X, Users, Loader2, User } from 'lucide-react';
+import { Search, Plus, X, Users, Loader2, User, Filter } from 'lucide-react';
 
 interface Student {
   id?: string;
@@ -13,12 +13,20 @@ interface Student {
   address: string;
   parentName: string;
   parentContact: string;
+  academicYear?: string;
+  status?: string;
 }
 
 export default function StudentsPage() {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // Filters
   const [searchQuery, setSearchQuery] = useState("");
+  const [filterClass, setFilterClass] = useState("");
+  const [filterYear, setFilterYear] = useState("");
+  const [filterStatus, setFilterStatus] = useState("ACTIVE");
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -30,7 +38,9 @@ export default function StudentsPage() {
     gradeClass: "",
     address: "",
     parentName: "",
-    parentContact: ""
+    parentContact: "",
+    academicYear: new Date().getFullYear().toString(),
+    status: "ACTIVE"
   });
 
   const fetchStudents = async () => {
@@ -71,7 +81,8 @@ export default function StudentsPage() {
         setIsModalOpen(false);
         setFormData({
           studentId: "", fullName: "", dateOfBirth: "", gender: "Male",
-          gradeClass: "", address: "", parentName: "", parentContact: ""
+          gradeClass: "", address: "", parentName: "", parentContact: "",
+          academicYear: new Date().getFullYear().toString(), status: "ACTIVE"
         });
         fetchStudents();
       } else {
@@ -84,10 +95,18 @@ export default function StudentsPage() {
     }
   };
 
-  const filteredStudents = students.filter(student => 
-    student.fullName.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    student.studentId.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const uniqueClasses = Array.from(new Set(students.map(s => s.gradeClass))).filter(Boolean);
+  const uniqueYears = Array.from(new Set(students.map(s => s.academicYear))).filter(Boolean);
+
+  const filteredStudents = students.filter(student => {
+    const matchesSearch = student.fullName.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          student.studentId.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesClass = filterClass ? student.gradeClass === filterClass : true;
+    const matchesYear = filterYear ? student.academicYear === filterYear : true;
+    const matchesStatus = filterStatus === "ALL" ? true : (student.status === filterStatus || (!student.status && filterStatus === "ACTIVE"));
+    
+    return matchesSearch && matchesClass && matchesYear && matchesStatus;
+  });
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 md:p-10">
@@ -111,18 +130,42 @@ export default function StudentsPage() {
           </button>
         </div>
 
-        {/* Search Bar */}
-        <div className="relative max-w-md">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-gray-400" />
+        {/* Filters */}
+        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row gap-4 items-center">
+          <div className="relative w-full md:w-96">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-gray-400" />
+            </div>
+            <input
+              type="text"
+              className="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-indigo-500 transition-all"
+              placeholder="Search by ID or Name..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </div>
-          <input
-            type="text"
-            className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all shadow-sm"
-            placeholder="Search by Student ID or Name..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+          
+          <div className="flex items-center gap-2 w-full md:w-auto overflow-x-auto">
+            <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-gray-700">
+              <Filter className="h-4 w-4 text-gray-400" />
+              <select className="bg-transparent outline-none text-sm font-medium" value={filterClass} onChange={(e) => setFilterClass(e.target.value)}>
+                <option value="">All Classes</option>
+                {uniqueClasses.map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </div>
+            
+            <select className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 outline-none" value={filterYear} onChange={(e) => setFilterYear(e.target.value)}>
+              <option value="">All Years</option>
+              {uniqueYears.map(y => <option key={y} value={y}>{y}</option>)}
+            </select>
+
+            <select className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 outline-none" value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
+              <option value="ALL">All Status</option>
+              <option value="ACTIVE">Active</option>
+              <option value="GRADUATED">Graduated</option>
+              <option value="ARCHIVED">Archived</option>
+            </select>
+          </div>
         </div>
 
         {/* Data Table */}
@@ -133,8 +176,8 @@ export default function StudentsPage() {
                 <tr>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Student</th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Student ID</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Class/Grade</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Parent Contact</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Details</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
                   <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Action</th>
                 </tr>
               </thead>
@@ -156,7 +199,7 @@ export default function StudentsPage() {
                           <Users className="h-8 w-8 text-gray-400" />
                         </div>
                         <p className="text-lg font-medium text-gray-900">No students found</p>
-                        <p className="text-sm">Try adjusting your search or add a new student.</p>
+                        <p className="text-sm">Try adjusting your filters or add a new student.</p>
                       </div>
                     </td>
                   </tr>
@@ -180,14 +223,16 @@ export default function StudentsPage() {
                         </span>
                       </td>
                       <td className="px-6 py-4">
-                        <p className="text-sm text-gray-900">{student.gradeClass}</p>
+                        <p className="text-sm text-gray-900 font-medium">{student.gradeClass}</p>
+                        <p className="text-xs text-gray-500">Batch: {student.academicYear || "N/A"}</p>
                       </td>
                       <td className="px-6 py-4">
-                        <p className="text-sm text-gray-900">{student.parentName}</p>
-                        <p className="text-xs text-gray-500">{student.parentContact}</p>
+                        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${(student.status || 'ACTIVE') === 'ACTIVE' ? 'bg-green-100 text-green-700' : (student.status === 'GRADUATED' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700')}`}>
+                          {student.status || 'ACTIVE'}
+                        </span>
                       </td>
                       <td className="px-6 py-4 text-right text-sm font-medium">
-                        <button className="text-indigo-600 hover:text-indigo-900 font-medium hover:underline">View Profile</button>
+                        <button className="text-indigo-600 hover:text-indigo-900 font-medium hover:underline">View</button>
                       </td>
                     </tr>
                   ))
@@ -201,34 +246,31 @@ export default function StudentsPage() {
       {/* Registration Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm transition-opacity">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-3xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
               <h2 className="text-xl font-bold text-gray-900">Register New Student</h2>
-              <button 
-                onClick={() => setIsModalOpen(false)}
-                className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-full transition-colors"
-              >
+              <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-full transition-colors">
                 <X className="h-5 w-5" />
               </button>
             </div>
             
-            <form onSubmit={handleSubmit} className="p-6">
+            <form onSubmit={handleSubmit} className="p-6 overflow-y-auto max-h-[80vh]">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-1">
                   <label className="text-sm font-medium text-gray-700">Student ID *</label>
-                  <input required name="studentId" value={formData.studentId} onChange={handleInputChange} type="text" className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all" placeholder="e.g. STU-2023-001" />
+                  <input required name="studentId" value={formData.studentId} onChange={handleInputChange} type="text" className="w-full border border-gray-300 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="e.g. STU-2024-001" />
                 </div>
                 <div className="space-y-1">
                   <label className="text-sm font-medium text-gray-700">Full Name *</label>
-                  <input required name="fullName" value={formData.fullName} onChange={handleInputChange} type="text" className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all" placeholder="e.g. John Doe" />
+                  <input required name="fullName" value={formData.fullName} onChange={handleInputChange} type="text" className="w-full border border-gray-300 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="e.g. John Doe" />
                 </div>
                 <div className="space-y-1">
                   <label className="text-sm font-medium text-gray-700">Date of Birth</label>
-                  <input required name="dateOfBirth" value={formData.dateOfBirth} onChange={handleInputChange} type="date" className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all" />
+                  <input required name="dateOfBirth" value={formData.dateOfBirth} onChange={handleInputChange} type="date" className="w-full border border-gray-300 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 outline-none transition-all" />
                 </div>
                 <div className="space-y-1">
                   <label className="text-sm font-medium text-gray-700">Gender</label>
-                  <select name="gender" value={formData.gender} onChange={handleInputChange} className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
+                  <select name="gender" value={formData.gender} onChange={handleInputChange} className="w-full border border-gray-300 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
                     <option>Male</option>
                     <option>Female</option>
                     <option>Other</option>
@@ -236,19 +278,31 @@ export default function StudentsPage() {
                 </div>
                 <div className="space-y-1">
                   <label className="text-sm font-medium text-gray-700">Grade / Class *</label>
-                  <input required name="gradeClass" value={formData.gradeClass} onChange={handleInputChange} type="text" className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all" placeholder="e.g. Grade 10 - A" />
+                  <input required name="gradeClass" value={formData.gradeClass} onChange={handleInputChange} type="text" className="w-full border border-gray-300 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="e.g. Grade 10 - A" />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-sm font-medium text-gray-700">Academic / Batch Year</label>
+                  <input name="academicYear" value={formData.academicYear} onChange={handleInputChange} type="text" className="w-full border border-gray-300 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="e.g. 2024" />
                 </div>
                 <div className="space-y-1">
                   <label className="text-sm font-medium text-gray-700">Parent Name *</label>
-                  <input required name="parentName" value={formData.parentName} onChange={handleInputChange} type="text" className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all" placeholder="e.g. Jane Doe" />
+                  <input required name="parentName" value={formData.parentName} onChange={handleInputChange} type="text" className="w-full border border-gray-300 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="e.g. Jane Doe" />
                 </div>
                 <div className="space-y-1">
                   <label className="text-sm font-medium text-gray-700">Parent Contact *</label>
-                  <input required name="parentContact" value={formData.parentContact} onChange={handleInputChange} type="text" className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all" placeholder="e.g. +1 234 567 890" />
+                  <input required name="parentContact" value={formData.parentContact} onChange={handleInputChange} type="text" className="w-full border border-gray-300 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="e.g. +1 234 567 890" />
                 </div>
                 <div className="space-y-1 md:col-span-2">
                   <label className="text-sm font-medium text-gray-700">Address</label>
-                  <input name="address" value={formData.address} onChange={handleInputChange} type="text" className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all" placeholder="Full residential address" />
+                  <input name="address" value={formData.address} onChange={handleInputChange} type="text" className="w-full border border-gray-300 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="Full residential address" />
+                </div>
+                <div className="space-y-1 md:col-span-2">
+                  <label className="text-sm font-medium text-gray-700">Status</label>
+                  <select name="status" value={formData.status} onChange={handleInputChange} className="w-full border border-gray-300 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
+                    <option value="ACTIVE">ACTIVE</option>
+                    <option value="GRADUATED">GRADUATED</option>
+                    <option value="ARCHIVED">ARCHIVED</option>
+                  </select>
                 </div>
               </div>
 

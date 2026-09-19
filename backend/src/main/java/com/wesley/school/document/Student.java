@@ -44,4 +44,8 @@ public class Student {
     private String parentContact;
 
     private String photoUrl;
+
+    private String academicYear;
+
+    private String status; // "ACTIVE", "GRADUATED", "ARCHIVED"
 }

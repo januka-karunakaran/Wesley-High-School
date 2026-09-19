@@ -122,7 +122,7 @@ export default function AdminDashboardPage() {
               <CalendarCheck className="h-8 w-8 text-purple-600 mb-3" />
               <span className="font-medium text-gray-900">Attendance</span>
             </Link>
-            <Link href="/marks" className="flex flex-col items-center justify-center p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors border border-gray-100">
+            <Link href="/admin/marks" className="flex flex-col items-center justify-center p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors border border-gray-100">
               <GraduationCap className="h-8 w-8 text-orange-600 mb-3" />
               <span className="font-medium text-gray-900">Marks & Results</span>
             </Link>
