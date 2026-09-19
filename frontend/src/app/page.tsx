@@ -48,10 +48,10 @@ export default function PublicHome() {
             </div>
           </div>
           <div className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
-            <Link href="#" className="hover:text-indigo-600 transition-colors">Home</Link>
-            <Link href="#" className="hover:text-indigo-600 transition-colors">About Us</Link>
-            <Link href="#" className="hover:text-indigo-600 transition-colors">Academics</Link>
-            <Link href="#" className="hover:text-indigo-600 transition-colors">Admissions</Link>
+            <Link href="/" className="hover:text-indigo-600 transition-colors">Home</Link>
+            <Link href="/about" className="hover:text-indigo-600 transition-colors">About Us</Link>
+            <Link href="/academics" className="hover:text-indigo-600 transition-colors">Academics</Link>
+            <Link href="/admissions" className="hover:text-indigo-600 transition-colors">Admissions</Link>
           </div>
           <div className="flex items-center gap-3">
             <Link href="/marks" className="hidden md:inline-flex items-center justify-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-900 text-sm font-medium rounded-lg transition-colors">
