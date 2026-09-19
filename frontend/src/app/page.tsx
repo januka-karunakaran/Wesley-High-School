@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CalendarCheck, Briefcase } from "lucide-react";
+import { CalendarCheck, Briefcase, GraduationCap } from "lucide-react";
 
 export default function Home() {
   return (
@@ -40,8 +40,6 @@ export default function Home() {
             center.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
         <div className="flex flex-col gap-4 text-base font-medium sm:flex-row items-center">
           <Link
             href="/attendance"
@@ -49,6 +47,13 @@ export default function Home() {
           >
             <CalendarCheck className="h-5 w-5" />
             Attendance
+          </Link>
+          <Link
+            href="/marks"
+            className="flex items-center gap-2 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 px-4 py-2.5 rounded-lg font-medium transition-all shadow-sm"
+          >
+            <GraduationCap className="h-5 w-5" />
+            Marks & Results
           </Link>
           <Link
             href="/teachers"
