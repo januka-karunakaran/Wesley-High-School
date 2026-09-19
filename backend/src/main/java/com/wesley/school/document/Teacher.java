@@ -41,4 +41,8 @@ public class Teacher {
     private String qualification;
 
     private String photoUrl;
+
+    private String academicYear;
+
+    private String status; // "ACTIVE", "RETIRED", "ARCHIVED"
 }

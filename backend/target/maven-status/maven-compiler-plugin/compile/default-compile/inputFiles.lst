@@ -1,5 +1,6 @@
 C:\Users\ASUS\Desktop\wesley\backend\src\main\java\com\wesley\school\service\ExamMarkService.java
 C:\Users\ASUS\Desktop\wesley\backend\src\main\java\com\wesley\school\document\Attendance.java
+C:\Users\ASUS\Desktop\wesley\backend\src\main\java\com\wesley\school\document\Admission.java
 C:\Users\ASUS\Desktop\wesley\backend\src\main\java\com\wesley\school\controller\ExamMarkController.java
 C:\Users\ASUS\Desktop\wesley\backend\src\main\java\com\wesley\school\service\TeacherService.java
 C:\Users\ASUS\Desktop\wesley\backend\src\main\java\com\wesley\school\controller\NoticeController.java
@@ -10,6 +11,8 @@ C:\Users\ASUS\Desktop\wesley\backend\src\main\java\com\wesley\school\service\Stu
 C:\Users\ASUS\Desktop\wesley\backend\src\main\java\com\wesley\school\repository\ExamMarkRepository.java
 C:\Users\ASUS\Desktop\wesley\backend\src\main\java\com\wesley\school\service\AttendanceService.java
 C:\Users\ASUS\Desktop\wesley\backend\src\main\java\com\wesley\school\repository\StudentRepository.java
+C:\Users\ASUS\Desktop\wesley\backend\src\main\java\com\wesley\school\repository\AdmissionRepository.java
+C:\Users\ASUS\Desktop\wesley\backend\src\main\java\com\wesley\school\controller\AdmissionController.java
 C:\Users\ASUS\Desktop\wesley\backend\src\main\java\com\wesley\school\document\Teacher.java
 C:\Users\ASUS\Desktop\wesley\backend\src\main\java\com\wesley\school\repository\NoticeRepository.java
 C:\Users\ASUS\Desktop\wesley\backend\src\main\java\com\wesley\school\SchoolManagementBackendApplication.java

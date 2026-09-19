@@ -47,14 +47,9 @@ export default function PublicHome() {
               <p className="text-xs font-medium text-indigo-600 tracking-wide uppercase">Utmost for the Highest</p>
             </div>
           </div>
-          <div className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
-            <Link href="#" className="hover:text-indigo-600 transition-colors">Home</Link>
-            <Link href="#" className="hover:text-indigo-600 transition-colors">About Us</Link>
-            <Link href="#" className="hover:text-indigo-600 transition-colors">Academics</Link>
-            <Link href="#" className="hover:text-indigo-600 transition-colors">Admissions</Link>
-          </div>
+
           <div className="flex items-center gap-3">
-            <Link href="/marks" className="hidden md:inline-flex items-center justify-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-900 text-sm font-medium rounded-lg transition-colors">
+            <Link href="/results" className="hidden md:inline-flex items-center justify-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-900 text-sm font-medium rounded-lg transition-colors">
               Student Results
             </Link>
             <Link href="/dashboard" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg shadow-sm transition-all active:scale-95">
@@ -80,7 +75,7 @@ export default function PublicHome() {
             Welcome to Wesley High School. We are committed to academic excellence, character development, and creating leaders for tomorrow.
           </p>
           <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="#" className="w-full sm:w-auto px-8 py-4 bg-white text-indigo-900 font-bold rounded-xl shadow-lg hover:bg-indigo-50 transition-all">
+            <Link href="/admissions" className="w-full sm:w-auto px-8 py-4 bg-white text-indigo-900 font-bold rounded-xl shadow-lg hover:bg-indigo-50 transition-all">
               Apply for Admission
             </Link>
             <Link href="#notices" className="w-full sm:w-auto px-8 py-4 bg-indigo-800/50 hover:bg-indigo-800/80 border border-indigo-700 text-white font-medium rounded-xl transition-all backdrop-blur-sm flex items-center justify-center gap-2">
