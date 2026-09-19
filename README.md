@@ -16,7 +16,7 @@ This repository contains the source code for the Wesley High School Management S
 3. Navigate to the `backend/` directory.
 4. Run the application:
    ```bash
-   ./mvnw spring-boot:run
+   mvn spring-boot:run
    ```
 
 ### Frontend (Next.js)
