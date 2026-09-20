@@ -251,24 +251,27 @@ export default function PublicHome() {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-sm font-medium text-slate-200">
+          <nav className="hidden lg:flex items-center gap-5 xl:gap-7 text-sm font-medium text-slate-200">
             <Link href="/" className="text-amber-400 font-semibold transition-colors hover:text-amber-300 py-1 border-b-2 border-amber-400">
               Home
             </Link>
             <Link href="#about" className="hover:text-amber-300 transition-colors py-1">
-              About Us
+              About
             </Link>
-            <Link href="#academics" className="hover:text-amber-300 transition-colors py-1">
-              Academics
+            <Link href="/notices" className="hover:text-amber-300 transition-colors py-1">
+              Notices
             </Link>
-            <Link href="#houses" className="hover:text-amber-300 transition-colors py-1">
-              Houses & Sports
+            <Link href="/gallery" className="hover:text-amber-300 transition-colors py-1">
+              Gallery
+            </Link>
+            <Link href="/portal" className="hover:text-amber-300 transition-colors py-1">
+              Student Portal
+            </Link>
+            <Link href="/staff" className="hover:text-amber-300 transition-colors py-1">
+              Staff
             </Link>
             <Link href="/admissions" className="hover:text-amber-300 transition-colors py-1">
               Admissions
-            </Link>
-            <Link href="#notices" className="hover:text-amber-300 transition-colors py-1">
-              Notices
             </Link>
             <Link href="#contact" className="hover:text-amber-300 transition-colors py-1">
               Contact
