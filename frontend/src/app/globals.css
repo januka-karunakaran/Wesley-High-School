@@ -1,26 +1,44 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --school-navy-dark: #071526;
+    --school-navy: #0d2137;
+    --school-navy-light: #163252;
+    --school-gold: #cfa137;
+    --school-gold-light: #f5d47a;
+    --school-gold-dark: #9e7517;
+    --school-cyan: #0284c7;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.font-crest {
+  font-family: 'Cinzel', Georgia, serif;
 }
+
+.font-serif-heading {
+  font-family: 'Playfair Display', Georgia, Cambria, serif;
+}
+
+/* Subtle Sri Lankan collegiate patterned background */
+.bg-crest-pattern {
+  background-color: #071526;
+  background-image: radial-gradient(#1e3a5f 0.75px, transparent 0.75px), radial-gradient(#1e3a5f 0.75px, #071526 0.75px);
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 15px;
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #fef3c7 0%, #f59e0b 50%, #d97706 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-border-glow {
+  box-shadow: 0 0 15px rgba(217, 119, 6, 0.25);
+}
+
