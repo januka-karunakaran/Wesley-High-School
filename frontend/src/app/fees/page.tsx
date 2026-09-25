@@ -137,7 +137,7 @@ export default function FeeManagementPage() {
       <div className="bg-[#071526] text-white py-10 px-4 sm:px-8">
         <div className="max-w-7xl mx-auto">
           <Link href="/dashboard" className="inline-flex items-center gap-1.5 text-amber-400 hover:text-amber-300 text-sm mb-4 transition-colors">
-            <ArrowLeft className="w-4 h-4" /> Back to Admin Dashboard
+            <ArrowLeft className="w-4 h-4" /> Back to Staff & Teacher Portal
           </Link>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">

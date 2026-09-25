@@ -7,6 +7,7 @@ import {
   Calendar,
   Bell,
   ChevronRight,
+  Shield,
   LayoutDashboard,
   GraduationCap,
   Award,
@@ -17,7 +18,6 @@ import {
   Clock,
   BookOpen,
   Trophy,
-  Shield,
   FileText,
   Download,
   ExternalLink,
@@ -109,7 +109,6 @@ export default function PublicHome() {
   const [notices, setNotices] = useState<Notice[]>(FALLBACK_NOTICES);
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [portalModalOpen, setPortalModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -164,25 +163,31 @@ export default function PublicHome() {
           </div>
 
           <div className="flex items-center gap-3 sm:gap-4 text-xs font-medium">
-            <LanguageToggle variant="pill" />
-            <div className="h-3.5 w-px bg-slate-700 hidden sm:block"></div>
+            <a
+              href="tel:+94672222345"
+              className="hidden lg:flex items-center gap-1.5 hover:text-amber-300 transition-colors text-slate-400"
+            >
+              <Phone className="w-3 h-3 text-amber-400" /> +94 (67) 222 2345
+            </a>
+            <div className="h-3.5 w-px bg-slate-700 hidden lg:block"></div>
             <Link
               href="/results"
               className="text-amber-300 hover:text-amber-200 font-semibold flex items-center gap-1 transition-colors"
             >
               <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" /> {t("studentResults")}
             </Link>
-            <button
-              onClick={() => setPortalModalOpen(true)}
-              className="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-3 py-1 rounded border border-amber-500/40 flex items-center gap-1.5 transition-all"
+            <div className="h-3.5 w-px bg-slate-700 hidden sm:block"></div>
+            <Link
+              href="/dashboard"
+              className="text-slate-300 hover:text-amber-300 font-semibold flex items-center gap-1 transition-colors"
             >
-              <Lock className="w-3 h-3 text-amber-400" /> {t("portalLogin")}
-            </button>
+              <Lock className="w-3 h-3 text-amber-400" /> Staff Portal
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* 2. MAIN NAVIGATION BAR */}
+      {/* 2. MAIN NAVIGATION BAR (CLEAN & SPACIOUS) */}
       <header className="sticky top-0 z-40 bg-[#0a1b2e]/95 backdrop-blur-md border-b border-amber-500/20 text-white shadow-xl transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 flex items-center justify-between">
           {/* School Crest & Branding */}
@@ -243,57 +248,55 @@ export default function PublicHome() {
             </div>
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-4 xl:gap-6 text-sm font-medium text-slate-200">
-            <Link href="/" className="text-amber-400 font-semibold transition-colors hover:text-amber-300 py-1 border-b-2 border-amber-400">
+          {/* Desktop Navigation Links - Clean, Spacious, Prestigious */}
+          <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-semibold text-slate-200">
+            <Link
+              href="/"
+              className="text-amber-400 font-bold tracking-wide transition-colors hover:text-amber-300 py-1 border-b-2 border-amber-400"
+            >
               {t("navHome")}
             </Link>
-            <Link href="/timetable" className="hover:text-amber-300 transition-colors py-1 flex items-center gap-1">
-              <Calendar className="w-3.5 h-3.5 text-amber-400" />
-              <span>{t("navTimetable")}</span>
+            <Link
+              href="/results"
+              className="hover:text-amber-300 transition-colors py-1 flex items-center gap-1.5 text-slate-200"
+            >
+              <Award className="w-4 h-4 text-amber-400" />
+              <span>{t("studentResults")}</span>
             </Link>
-            <Link href="/events" className="hover:text-amber-300 transition-colors py-1 flex items-center gap-1">
-              <Ticket className="w-3.5 h-3.5 text-amber-400" />
-              <span>{t("navEvents")}</span>
-            </Link>
-            <Link href="/notices" className="hover:text-amber-300 transition-colors py-1">
-              {t("navNotices")}
-            </Link>
-            <Link href="/gallery" className="hover:text-amber-300 transition-colors py-1">
-              {t("navGallery")}
-            </Link>
-            <Link href="/portal" className="hover:text-amber-300 transition-colors py-1">
-              {t("navPortal")}
-            </Link>
-            <Link href="/staff" className="hover:text-amber-300 transition-colors py-1">
-              {t("navStaff")}
-            </Link>
-            <Link href="/admissions" className="hover:text-amber-300 transition-colors py-1">
-              {t("navAdmissions")}
+            <Link
+              href="/admissions"
+              className="hover:text-amber-300 transition-colors py-1 flex items-center gap-1.5 text-slate-200"
+            >
+              <GraduationCap className="w-4 h-4 text-amber-400" />
+              <span>{t("navAdmissions")}</span>
             </Link>
           </nav>
 
-          {/* Quick Action & Portal Buttons */}
-          <div className="hidden lg:flex items-center gap-3">
+          {/* Quick Action, Language Toggle & Portal Login */}
+          <div className="hidden md:flex items-center gap-3">
+            <LanguageToggle variant="pill" />
+
             <Link
               href="/admissions"
-              className="px-4 py-2 text-xs font-bold uppercase tracking-wider text-slate-950 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 rounded-lg shadow-md hover:shadow-amber-500/25 transition-all transform hover:-translate-y-0.5"
+              className="px-4 py-2 text-xs font-extrabold uppercase tracking-wider text-slate-950 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 rounded-xl shadow-md hover:shadow-amber-500/25 transition-all transform hover:-translate-y-0.5"
             >
               {t("enrollNow")}
             </Link>
-            <button
-              onClick={() => setPortalModalOpen(true)}
-              className="px-4 py-2 text-xs font-semibold text-white bg-slate-800/80 hover:bg-slate-700 border border-slate-600 rounded-lg flex items-center gap-2 transition-all"
+
+            <Link
+              href="/dashboard"
+              className="px-3.5 py-2 text-xs font-bold text-white bg-slate-800/90 hover:bg-slate-700/90 border border-slate-600 hover:border-amber-400/50 rounded-xl flex items-center gap-2 transition-all shadow-sm"
+              title="Staff & Teacher Portal"
             >
               <LayoutDashboard className="w-3.5 h-3.5 text-amber-400" />
-              {t("portalLogin")}
-            </button>
+              <span>{t("portalLogin")}</span>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-slate-300 hover:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400"
+            className="md:hidden p-2 text-slate-300 hover:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -302,82 +305,35 @@ export default function PublicHome() {
 
         {/* Mobile Dropdown Drawer */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-[#071526] border-t border-slate-800 px-6 py-5 space-y-4 animate-in slide-in-from-top-3">
+          <div className="md:hidden bg-[#071526] border-t border-slate-800 px-6 py-5 space-y-4 animate-in slide-in-from-top-3">
             <div className="pb-3 border-b border-slate-800 flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-400 uppercase">Select Language / மொழி:</span>
+              <span className="text-xs font-bold text-slate-400 uppercase">Language / மொழி:</span>
               <LanguageToggle variant="pill" />
             </div>
 
-            <nav className="flex flex-col space-y-3 text-base font-medium text-slate-200">
+            <nav className="flex flex-col space-y-3.5 text-base font-medium text-slate-200">
               <Link
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-amber-400 font-semibold"
+                className="text-amber-400 font-bold flex items-center gap-2"
               >
                 {t("navHome")}
               </Link>
               <Link
-                href="/timetable"
-                onClick={() => setMobileMenuOpen(false)}
-                className="hover:text-amber-300 transition-colors flex items-center gap-2"
-              >
-                <Calendar className="w-4 h-4 text-amber-400" /> {t("navTimetable")}
-              </Link>
-              <Link
-                href="/events"
-                onClick={() => setMobileMenuOpen(false)}
-                className="hover:text-amber-300 transition-colors flex items-center gap-2"
-              >
-                <Ticket className="w-4 h-4 text-amber-400" /> {t("navEvents")}
-              </Link>
-              <Link
-                href="/portal"
-                onClick={() => setMobileMenuOpen(false)}
-                className="hover:text-amber-300 transition-colors flex items-center gap-2"
-              >
-                <GraduationCap className="w-4 h-4 text-amber-400" /> {t("navPortal")}
-              </Link>
-              <Link
                 href="/results"
                 onClick={() => setMobileMenuOpen(false)}
-                className="hover:text-amber-300 transition-colors flex items-center gap-2"
+                className="hover:text-amber-300 transition-colors flex items-center gap-2.5 font-semibold text-slate-200"
               >
-                <Award className="w-4 h-4 text-amber-400" /> {t("studentResults")}
-              </Link>
-              <Link
-                href="/notices"
-                onClick={() => setMobileMenuOpen(false)}
-                className="hover:text-amber-300 transition-colors"
-              >
-                {t("navNotices")}
-              </Link>
-              <Link
-                href="/gallery"
-                onClick={() => setMobileMenuOpen(false)}
-                className="hover:text-amber-300 transition-colors"
-              >
-                {t("navGallery")}
-              </Link>
-              <Link
-                href="/staff"
-                onClick={() => setMobileMenuOpen(false)}
-                className="hover:text-amber-300 transition-colors"
-              >
-                {t("navStaff")}
+                <Award className="w-4 h-4 text-amber-400" />
+                {t("studentResults")}
               </Link>
               <Link
                 href="/admissions"
                 onClick={() => setMobileMenuOpen(false)}
-                className="hover:text-amber-300 transition-colors"
+                className="hover:text-amber-300 transition-colors flex items-center gap-2.5 font-semibold text-slate-200"
               >
+                <GraduationCap className="w-4 h-4 text-amber-400" />
                 {t("navAdmissions")}
-              </Link>
-              <Link
-                href="#contact"
-                onClick={() => setMobileMenuOpen(false)}
-                className="hover:text-amber-300 transition-colors"
-              >
-                {t("navContact")}
               </Link>
             </nav>
 
@@ -385,19 +341,17 @@ export default function PublicHome() {
               <Link
                 href="/admissions"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg text-sm transition-colors"
+                className="w-full text-center py-3 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-extrabold rounded-xl text-xs uppercase tracking-wider transition-all shadow-md"
               >
-                Admissions Application
+                {t("enrollNow")}
               </Link>
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setPortalModalOpen(true);
-                }}
-                className="w-full text-center py-2.5 bg-slate-800 text-white font-medium rounded-lg text-sm border border-slate-700 flex items-center justify-center gap-2"
+              <Link
+                href="/dashboard"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full text-center py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-medium rounded-xl text-xs border border-slate-700 flex items-center justify-center gap-2 transition-colors"
               >
-                <Lock className="w-4 h-4 text-amber-400" /> Portal Login (Staff/Students)
-              </button>
+                <LayoutDashboard className="w-3.5 h-3.5 text-amber-400" /> {t("portalLogin")} (Staff & Teachers)
+              </Link>
             </div>
           </div>
         )}
@@ -615,7 +569,7 @@ export default function PublicHome() {
                   href="/dashboard"
                   className="text-xs font-semibold text-slate-700 hover:text-slate-900 underline underline-offset-4"
                 >
-                  View Administrative Leadership & Staff Directory &rarr;
+                  View Faculty Leadership & Staff Directory &rarr;
                 </Link>
               </div>
             </div>
@@ -939,20 +893,13 @@ export default function PublicHome() {
                   ))}
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-slate-800 space-y-2">
+                <div className="mt-6 pt-4 border-t border-slate-800">
                   <Link
                     href="/events"
                     className="w-full py-2.5 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 text-xs font-extrabold rounded-xl transition-all shadow-md text-center flex items-center justify-center gap-1.5"
                   >
                     <Ticket className="w-4 h-4" />
                     <span>{t("registerForEvent")}</span>
-                  </Link>
-                  <Link
-                    href="/timetable"
-                    className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl transition-colors text-center flex items-center justify-center gap-1.5 border border-slate-700"
-                  >
-                    <Calendar className="w-4 h-4 text-amber-400" />
-                    <span>View Class Timetables</span>
                   </Link>
                 </div>
               </div>
@@ -1081,14 +1028,12 @@ export default function PublicHome() {
               </h4>
               <ul className="space-y-2 text-xs">
                 <li>
-                  <Link href="/dashboard" className="text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-1">
-                    <Lock className="w-3 h-3" /> Teacher & Admin Login
+                  <Link href="/dashboard" className="text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-1 font-semibold">
+                    <Lock className="w-3 h-3" /> Staff & Teacher Portal
                   </Link>
                 </li>
-                <li><Link href="/results" className="hover:text-amber-300 transition-colors">Student Marksheets</Link></li>
-                <li><Link href="/attendance" className="hover:text-amber-300 transition-colors">Attendance Portal</Link></li>
-                <li><Link href="/students" className="hover:text-amber-300 transition-colors">Student Information</Link></li>
-                <li><Link href="/admissions" className="hover:text-amber-300 transition-colors">New Admissions Desk</Link></li>
+                <li><Link href="/results" className="hover:text-amber-300 transition-colors">Student Results & Marksheets</Link></li>
+                <li><Link href="/admissions" className="hover:text-amber-300 transition-colors">Online Admissions Desk</Link></li>
               </ul>
             </div>
           </div>
@@ -1105,94 +1050,6 @@ export default function PublicHome() {
           </div>
         </div>
       </footer>
-
-      {/* 10. PORTAL LOGIN MODAL */}
-      {portalModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-[#071526] border border-amber-500/30 text-white rounded-2xl w-full max-w-md p-6 relative shadow-2xl space-y-5">
-            <button
-              onClick={() => setPortalModalOpen(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 rounded-lg"
-              aria-label="Close modal"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            <div className="text-center space-y-1">
-              <div className="w-12 h-12 rounded-full bg-amber-400/20 text-amber-400 flex items-center justify-center mx-auto mb-2 border border-amber-400/30">
-                <Lock className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-bold font-crest">Wesley High School Portal</h3>
-              <p className="text-xs text-slate-300">
-                Select your designated portal to proceed with authentication.
-              </p>
-            </div>
-
-            <div className="space-y-3">
-              {/* Student Portal */}
-              <Link
-                href="/results"
-                onClick={() => setPortalModalOpen(false)}
-                className="flex items-center justify-between p-3.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-400/50 hover:bg-slate-800 transition-all group"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-sky-500/20 text-sky-400">
-                    <GraduationCap className="w-5 h-5" />
-                  </div>
-                  <div className="text-left">
-                    <h4 className="text-sm font-bold text-white group-hover:text-amber-300">Student & Parents</h4>
-                    <p className="text-[11px] text-slate-400">View exam results, reports & circulars</p>
-                  </div>
-                </div>
-                <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
-              </Link>
-
-              {/* Staff & Teacher Portal */}
-              <Link
-                href="/dashboard"
-                onClick={() => setPortalModalOpen(false)}
-                className="flex items-center justify-between p-3.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-400/50 hover:bg-slate-800 transition-all group"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-amber-500/20 text-amber-400">
-                    <LayoutDashboard className="w-5 h-5" />
-                  </div>
-                  <div className="text-left">
-                    <h4 className="text-sm font-bold text-white group-hover:text-amber-300">Staff & Teachers</h4>
-                    <p className="text-[11px] text-slate-400">Manage marks, attendance & classrooms</p>
-                  </div>
-                </div>
-                <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
-              </Link>
-
-              {/* Administrator Portal */}
-              <Link
-                href="/admin/marks"
-                onClick={() => setPortalModalOpen(false)}
-                className="flex items-center justify-between p-3.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-400/50 hover:bg-slate-800 transition-all group"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-purple-500/20 text-purple-400">
-                    <Shield className="w-5 h-5" />
-                  </div>
-                  <div className="text-left">
-                    <h4 className="text-sm font-bold text-white group-hover:text-amber-300">Principal & Administration</h4>
-                    <p className="text-[11px] text-slate-400">Institution registry, admissions & audit</p>
-                  </div>
-                </div>
-                <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
-
-            <div className="text-center pt-2">
-              <p className="text-[11px] text-slate-400">
-                Need credential assistance? Contact the ICT Department at{" "}
-                <span className="text-amber-400">ict@wesleyhighkalmunai.lk</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { GraduationCap, Loader2, Save, Users, AlertCircle } from 'lucide-react';
+import Link from 'next/link';
+import { GraduationCap, Loader2, Save, Users, AlertCircle, ArrowLeft } from 'lucide-react';
 
 interface ExamMark {
   id?: string;
@@ -64,12 +65,20 @@ export default function AdminMarksPage() {
       <div className="max-w-4xl mx-auto space-y-8">
         
         {/* Header */}
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-            <GraduationCap className="text-orange-600 h-8 w-8" />
-            Marks Entry (Admin)
-          </h1>
-          <p className="text-gray-500 mt-1">Secure portal for teachers to enter and update student examination marks.</p>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-3">
+              <GraduationCap className="text-amber-600 h-8 w-8" />
+              Marks Entry (Staff & Teacher Portal)
+            </h1>
+            <p className="text-gray-500 mt-1">Portal for faculty and teachers to record student examination marks and term assessments.</p>
+          </div>
+          <Link
+            href="/dashboard"
+            className="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-slate-900 bg-white border border-gray-300 hover:border-amber-400 px-4 py-2.5 rounded-xl shadow-sm transition-all self-start sm:self-center"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back to Staff & Teacher Portal
+          </Link>
         </div>
 
         {notification && (
