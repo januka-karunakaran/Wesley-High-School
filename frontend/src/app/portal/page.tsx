@@ -5,8 +5,9 @@ import Link from "next/link";
 import {
   Search, GraduationCap, Calendar, Award, DollarSign,
   ArrowLeft, CheckCircle2, XCircle, AlertTriangle, Loader2,
-  User, BookOpen, BarChart2, TrendingUp, Clock, ChevronDown
+  User, BookOpen, BarChart2, TrendingUp, Clock, ChevronDown, Download
 } from "lucide-react";
+import { generateReportCardPdf } from "../../utils/generateReportCardPdf";
 
 // ── Type Definitions ────────────────────────────────────────────────────────
 interface Student {
@@ -290,19 +291,46 @@ export default function StudentPortalPage() {
               {/* ── RESULTS TAB ── */}
               {activeTab === "results" && (
                 <div className="space-y-4">
-                  {/* Term filter */}
-                  <div className="flex flex-wrap gap-2">
-                    {["All", ...terms].map(term => (
+                  {/* Term filter & PDF download */}
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex flex-wrap gap-2">
+                      {["All", ...terms].map(term => (
+                        <button
+                          key={term}
+                          onClick={() => setActiveTerm(term)}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+                            activeTerm === term ? "bg-[#071526] text-amber-300 border-amber-500/30" : "bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200"
+                          }`}
+                        >
+                          {term}
+                        </button>
+                      ))}
+                    </div>
+
+                    {filteredResults.length > 0 && (
                       <button
-                        key={term}
-                        onClick={() => setActiveTerm(term)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
-                          activeTerm === term ? "bg-[#071526] text-amber-300 border-amber-500/30" : "bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200"
-                        }`}
+                        onClick={() => {
+                          generateReportCardPdf({
+                            student: {
+                              studentId: summary.student.studentId,
+                              fullName: summary.student.fullName,
+                              gradeClass: summary.student.gradeClass,
+                              academicYear: summary.student.academicYear || "2025/2026",
+                              attendancePercentage: summary.attendancePercentage,
+                              totalDays: summary.totalAttendanceDays,
+                              presentDays: summary.presentDays,
+                            },
+                            term: activeTerm === "All" ? "Cumulative Annual" : activeTerm,
+                            results: filteredResults,
+                            attendancePct: summary.attendancePercentage,
+                          });
+                        }}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-bold text-xs shadow-md transition-all active:scale-95"
                       >
-                        {term}
+                        <Download className="w-3.5 h-3.5 text-slate-950" />
+                        <span>Download Official Report Card (PDF)</span>
                       </button>
-                    ))}
+                    )}
                   </div>
 
                   {filteredResults.length === 0 ? (

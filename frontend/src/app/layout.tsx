@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   keywords: ["Wesley High School", "Kalmunai", "Sri Lanka Schools", "Utmost for the Highest", "Wesley College Kalmunai", "National School Sri Lanka"],
 };
 
+import { Providers } from "./providers";
+
 export default function RootLayout({
   children,
 }: {
@@ -23,7 +25,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col font-sans bg-slate-50 text-slate-900 antialiased selection:bg-amber-400 selection:text-slate-950">
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
