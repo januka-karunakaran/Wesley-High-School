@@ -29,8 +29,11 @@ import {
   ArrowRight,
   Compass,
   Sparkles,
-  ChevronDown
+  ChevronDown,
+  Ticket
 } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
+import { LanguageToggle } from "../components/LanguageToggle";
 
 interface Notice {
   id: string;
@@ -102,6 +105,7 @@ const FALLBACK_NOTICES: Notice[] = [
 ];
 
 export default function PublicHome() {
+  const { t, language } = useLanguage();
   const [notices, setNotices] = useState<Notice[]>(FALLBACK_NOTICES);
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -152,38 +156,27 @@ export default function PublicHome() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
           <div className="flex items-center gap-3 overflow-hidden text-center sm:text-left">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-semibold border border-amber-400/30 text-[11px] uppercase tracking-wider shrink-0">
-              <Sparkles className="w-3 h-3 text-amber-400 animate-pulse" /> Official National School Portal
+              <Sparkles className="w-3 h-3 text-amber-400 animate-pulse" /> {t("nationalSchoolBadge")}
             </span>
             <span className="hidden md:inline-block text-slate-400 text-xs truncate">
-              Beach Road, Kalmunai, Eastern Province, Sri Lanka • Estd. 1885
+              {t("address")} • Estd. 1885
             </span>
           </div>
 
-          <div className="flex items-center gap-4 text-xs font-medium">
-            <a
-              href="tel:+94672222345"
-              className="hidden lg:flex items-center gap-1.5 hover:text-amber-300 transition-colors"
-            >
-              <Phone className="w-3 h-3 text-amber-400" /> +94 (67) 222 2345
-            </a>
-            <a
-              href="mailto:info@wesleyhighkalmunai.lk"
-              className="hidden lg:flex items-center gap-1.5 hover:text-amber-300 transition-colors"
-            >
-              <Mail className="w-3 h-3 text-amber-400" /> info@wesleyhighkalmunai.lk
-            </a>
-            <div className="h-3.5 w-px bg-slate-700 hidden lg:block"></div>
+          <div className="flex items-center gap-3 sm:gap-4 text-xs font-medium">
+            <LanguageToggle variant="pill" />
+            <div className="h-3.5 w-px bg-slate-700 hidden sm:block"></div>
             <Link
               href="/results"
               className="text-amber-300 hover:text-amber-200 font-semibold flex items-center gap-1 transition-colors"
             >
-              <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" /> Student Results
+              <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" /> {t("studentResults")}
             </Link>
             <button
               onClick={() => setPortalModalOpen(true)}
               className="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-3 py-1 rounded border border-amber-500/40 flex items-center gap-1.5 transition-all"
             >
-              <Lock className="w-3 h-3 text-amber-400" /> Portal Login
+              <Lock className="w-3 h-3 text-amber-400" /> {t("portalLogin")}
             </button>
           </div>
         </div>
@@ -235,46 +228,48 @@ export default function PublicHome() {
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-xl sm:text-2xl font-bold tracking-tight font-crest text-white group-hover:text-amber-300 transition-colors uppercase">
-                  Wesley High School
+                  {t("schoolName")}
                 </h1>
                 <span className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-bold bg-amber-500 text-slate-950 rounded tracking-wider">
-                  KALMUNAI
+                  {t("location")}
                 </span>
               </div>
               <p className="text-[12px] sm:text-[13px] font-serif italic text-amber-300/90 tracking-wide">
-                &ldquo;Utmost for the Highest&rdquo;
+                &ldquo;{t("motto")}&rdquo;
               </p>
               <p className="text-[10px] text-slate-400 font-medium tracking-wider uppercase">
-                Established 1885 • National School
+                {t("established")}
               </p>
             </div>
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-5 xl:gap-7 text-sm font-medium text-slate-200">
+          <nav className="hidden lg:flex items-center gap-4 xl:gap-6 text-sm font-medium text-slate-200">
             <Link href="/" className="text-amber-400 font-semibold transition-colors hover:text-amber-300 py-1 border-b-2 border-amber-400">
-              Home
+              {t("navHome")}
             </Link>
-            <Link href="#about" className="hover:text-amber-300 transition-colors py-1">
-              About
+            <Link href="/timetable" className="hover:text-amber-300 transition-colors py-1 flex items-center gap-1">
+              <Calendar className="w-3.5 h-3.5 text-amber-400" />
+              <span>{t("navTimetable")}</span>
+            </Link>
+            <Link href="/events" className="hover:text-amber-300 transition-colors py-1 flex items-center gap-1">
+              <Ticket className="w-3.5 h-3.5 text-amber-400" />
+              <span>{t("navEvents")}</span>
             </Link>
             <Link href="/notices" className="hover:text-amber-300 transition-colors py-1">
-              Notices
+              {t("navNotices")}
             </Link>
             <Link href="/gallery" className="hover:text-amber-300 transition-colors py-1">
-              Gallery
+              {t("navGallery")}
             </Link>
             <Link href="/portal" className="hover:text-amber-300 transition-colors py-1">
-              Student Portal
+              {t("navPortal")}
             </Link>
             <Link href="/staff" className="hover:text-amber-300 transition-colors py-1">
-              Staff
+              {t("navStaff")}
             </Link>
             <Link href="/admissions" className="hover:text-amber-300 transition-colors py-1">
-              Admissions
-            </Link>
-            <Link href="#contact" className="hover:text-amber-300 transition-colors py-1">
-              Contact
+              {t("navAdmissions")}
             </Link>
           </nav>
 
@@ -284,14 +279,14 @@ export default function PublicHome() {
               href="/admissions"
               className="px-4 py-2 text-xs font-bold uppercase tracking-wider text-slate-950 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 rounded-lg shadow-md hover:shadow-amber-500/25 transition-all transform hover:-translate-y-0.5"
             >
-              Enroll Now
+              {t("enrollNow")}
             </Link>
             <button
               onClick={() => setPortalModalOpen(true)}
               className="px-4 py-2 text-xs font-semibold text-white bg-slate-800/80 hover:bg-slate-700 border border-slate-600 rounded-lg flex items-center gap-2 transition-all"
             >
               <LayoutDashboard className="w-3.5 h-3.5 text-amber-400" />
-              Portal Access
+              {t("portalLogin")}
             </button>
           </div>
 
@@ -308,62 +303,81 @@ export default function PublicHome() {
         {/* Mobile Dropdown Drawer */}
         {mobileMenuOpen && (
           <div className="lg:hidden bg-[#071526] border-t border-slate-800 px-6 py-5 space-y-4 animate-in slide-in-from-top-3">
+            <div className="pb-3 border-b border-slate-800 flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-400 uppercase">Select Language / மொழி:</span>
+              <LanguageToggle variant="pill" />
+            </div>
+
             <nav className="flex flex-col space-y-3 text-base font-medium text-slate-200">
               <Link
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
                 className="text-amber-400 font-semibold"
               >
-                Home
+                {t("navHome")}
               </Link>
               <Link
-                href="#about"
+                href="/timetable"
+                onClick={() => setMobileMenuOpen(false)}
+                className="hover:text-amber-300 transition-colors flex items-center gap-2"
+              >
+                <Calendar className="w-4 h-4 text-amber-400" /> {t("navTimetable")}
+              </Link>
+              <Link
+                href="/events"
+                onClick={() => setMobileMenuOpen(false)}
+                className="hover:text-amber-300 transition-colors flex items-center gap-2"
+              >
+                <Ticket className="w-4 h-4 text-amber-400" /> {t("navEvents")}
+              </Link>
+              <Link
+                href="/portal"
+                onClick={() => setMobileMenuOpen(false)}
+                className="hover:text-amber-300 transition-colors flex items-center gap-2"
+              >
+                <GraduationCap className="w-4 h-4 text-amber-400" /> {t("navPortal")}
+              </Link>
+              <Link
+                href="/results"
+                onClick={() => setMobileMenuOpen(false)}
+                className="hover:text-amber-300 transition-colors flex items-center gap-2"
+              >
+                <Award className="w-4 h-4 text-amber-400" /> {t("studentResults")}
+              </Link>
+              <Link
+                href="/notices"
                 onClick={() => setMobileMenuOpen(false)}
                 className="hover:text-amber-300 transition-colors"
               >
-                About Us & History
+                {t("navNotices")}
               </Link>
               <Link
-                href="#academics"
+                href="/gallery"
                 onClick={() => setMobileMenuOpen(false)}
                 className="hover:text-amber-300 transition-colors"
               >
-                Academic Streams
+                {t("navGallery")}
               </Link>
               <Link
-                href="#houses"
+                href="/staff"
                 onClick={() => setMobileMenuOpen(false)}
                 className="hover:text-amber-300 transition-colors"
               >
-                Houses & Sports
+                {t("navStaff")}
               </Link>
               <Link
                 href="/admissions"
                 onClick={() => setMobileMenuOpen(false)}
                 className="hover:text-amber-300 transition-colors"
               >
-                Admissions 2025/2026
-              </Link>
-              <Link
-                href="#notices"
-                onClick={() => setMobileMenuOpen(false)}
-                className="hover:text-amber-300 transition-colors"
-              >
-                Notices & Circulars
-              </Link>
-              <Link
-                href="/results"
-                onClick={() => setMobileMenuOpen(false)}
-                className="hover:text-amber-300 transition-colors"
-              >
-                Student Exam Results
+                {t("navAdmissions")}
               </Link>
               <Link
                 href="#contact"
                 onClick={() => setMobileMenuOpen(false)}
                 className="hover:text-amber-300 transition-colors"
               >
-                Contact Us
+                {t("navContact")}
               </Link>
             </nav>
 
@@ -901,7 +915,7 @@ export default function PublicHome() {
                   {upcomingEvents.map((evt) => (
                     <div
                       key={evt.id}
-                      className="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-amber-500/40 transition-colors"
+                      className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-amber-500/40 transition-colors"
                     >
                       <div className="flex items-center justify-between text-xs text-amber-400 font-semibold mb-1">
                         <span>{new Date(evt.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
@@ -911,17 +925,35 @@ export default function PublicHome() {
                       </div>
                       <h4 className="text-xs sm:text-sm font-bold text-slate-100">{evt.title}</h4>
                       <p className="text-xs text-slate-400 mt-1 line-clamp-2">{evt.description}</p>
+                      <div className="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between">
+                        <span className="text-[11px] text-amber-400/80 font-medium">Public Event</span>
+                        <Link
+                          href={`/events?event=${encodeURIComponent(evt.title)}`}
+                          className="inline-flex items-center gap-1 text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors"
+                        >
+                          <Ticket className="w-3 h-3" />
+                          <span>RSVP / Register</span>
+                        </Link>
+                      </div>
                     </div>
                   ))}
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-slate-800">
-                  <button
-                    onClick={() => alert("The comprehensive Academic Calendar 2025/2026 is published under the Ministry of Education circular.")}
-                    className="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold rounded-lg transition-colors text-center"
+                <div className="mt-6 pt-4 border-t border-slate-800 space-y-2">
+                  <Link
+                    href="/events"
+                    className="w-full py-2.5 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 text-xs font-extrabold rounded-xl transition-all shadow-md text-center flex items-center justify-center gap-1.5"
                   >
-                    View Full Academic Calendar 2025/26
-                  </button>
+                    <Ticket className="w-4 h-4" />
+                    <span>{t("registerForEvent")}</span>
+                  </Link>
+                  <Link
+                    href="/timetable"
+                    className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl transition-colors text-center flex items-center justify-center gap-1.5 border border-slate-700"
+                  >
+                    <Calendar className="w-4 h-4 text-amber-400" />
+                    <span>View Class Timetables</span>
+                  </Link>
                 </div>
               </div>
 
