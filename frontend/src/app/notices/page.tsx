@@ -5,7 +5,7 @@ import Link from "next/link";
 import {
   Bell, Search, Filter, Download, FileText, Calendar,
   ChevronRight, AlertCircle, Info, BookOpen, Award,
-  ArrowLeft, ExternalLink, Clock, Tag, Loader2
+  ArrowLeft, ExternalLink, Clock, Tag, Loader2, PlusCircle, CheckCircle2, Upload, X
 } from "lucide-react";
 
 interface Notice {
@@ -103,6 +103,20 @@ export default function NoticesPage() {
   const [searchQuery, setSearchQuery]   = useState("");
   const [selectedNotice, setSelectedNotice] = useState<Notice | null>(null);
 
+  // Notice upload state for Staff & Teacher Portal
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [submittingNotice, setSubmittingNotice] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [newNotice, setNewNotice] = useState({
+    title: "",
+    category: "Circular",
+    type: "Notice",
+    description: "",
+    postedBy: "Academic Branch, Wesley High School",
+    urgent: false,
+    pdfFileName: "",
+  });
+
   useEffect(() => {
     const load = async () => {
       try {
@@ -132,23 +146,80 @@ export default function NoticesPage() {
 
   const urgent = notices.filter(n => n.urgent).slice(0, 3);
 
+  const handleUploadSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newNotice.title || !newNotice.description) return;
+    setSubmittingNotice(true);
+
+    const created: Notice = {
+      id: "notice-" + Date.now(),
+      title: newNotice.title,
+      description: newNotice.description,
+      date: new Date().toISOString().split("T")[0],
+      type: newNotice.type,
+      category: newNotice.category,
+      urgent: newNotice.urgent,
+      postedBy: newNotice.postedBy,
+      pdfFileName: newNotice.pdfFileName || undefined,
+    };
+
+    try {
+      await fetch("http://localhost:8080/api/v1/notices", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(created),
+      });
+    } catch {
+      // offline fallback
+    }
+
+    setNotices((prev) => [created, ...prev]);
+    setSubmittingNotice(false);
+    setUploadSuccess(true);
+    setTimeout(() => {
+      setUploadSuccess(false);
+      setIsUploadModalOpen(false);
+      setNewNotice({
+        title: "",
+        category: "Circular",
+        type: "Notice",
+        description: "",
+        postedBy: "Academic Branch, Wesley High School",
+        urgent: false,
+        pdfFileName: "",
+      });
+    }, 1200);
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 font-sans">
       {/* Header */}
       <div className="bg-[#071526] text-white py-10 px-4 sm:px-8">
         <div className="max-w-7xl mx-auto">
-          <Link href="/" className="inline-flex items-center gap-1.5 text-amber-400 hover:text-amber-300 text-sm mb-4 transition-colors">
-            <ArrowLeft className="w-4 h-4" /> Back to Home
+          <Link href="/dashboard" className="inline-flex items-center gap-1.5 text-amber-400 hover:text-amber-300 text-sm mb-4 transition-colors font-semibold">
+            <ArrowLeft className="w-4 h-4" /> Back to Staff & Teacher Portal
           </Link>
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-amber-500/20 rounded-lg border border-amber-500/30">
-              <Bell className="w-6 h-6 text-amber-400" />
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="p-2 bg-amber-500/20 rounded-lg border border-amber-500/30">
+                  <Bell className="w-6 h-6 text-amber-400" />
+                </div>
+                <h1 className="text-2xl sm:text-3xl font-extrabold font-crest">Official Notice Board & Circulars</h1>
+              </div>
+              <p className="text-slate-300 text-sm max-w-2xl">
+                Wesley High School, Kalmunai — Official announcements, ministry circulars, examination schedules, and faculty notices.
+              </p>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold font-crest">Official Notice Board & Circulars</h1>
+
+            <button
+              onClick={() => setIsUploadModalOpen(true)}
+              className="flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-sm transition-all shadow-md self-start sm:self-center shrink-0"
+            >
+              <PlusCircle className="w-4 h-4" />
+              <span>Upload Notice / Circular</span>
+            </button>
           </div>
-          <p className="text-slate-300 text-sm max-w-2xl">
-            Wesley High School, Kalmunai — Official announcements, ministry circulars, examination schedules, and upcoming events.
-          </p>
         </div>
       </div>
 
@@ -359,6 +430,147 @@ export default function NoticesPage() {
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+      {/* Staff Notice Upload Modal */}
+      {isUploadModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-2xl max-w-xl w-full p-6 relative shadow-2xl space-y-5">
+            <div className="flex items-center justify-between border-b pb-4">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 rounded-lg bg-amber-100 text-amber-800">
+                  <Upload className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900 font-crest">Upload & Publish Notice</h3>
+                  <p className="text-xs text-slate-500">Staff & Teacher Portal — Official Circular Publication</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsUploadModalOpen(false)}
+                className="text-slate-400 hover:text-slate-700 p-1 rounded-lg"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {uploadSuccess ? (
+              <div className="py-8 text-center space-y-2">
+                <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto animate-bounce" />
+                <h4 className="text-lg font-bold text-slate-900">Notice Published Successfully</h4>
+                <p className="text-xs text-slate-500">The notice has been added to the board.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleUploadSubmit} className="space-y-4 text-xs font-medium text-slate-700">
+                <div>
+                  <label className="block mb-1 font-bold text-slate-900">Notice Title *</label>
+                  <input
+                    type="text"
+                    required
+                    value={newNotice.title}
+                    onChange={(e) => setNewNotice({ ...newNotice, title: e.target.value })}
+                    placeholder="e.g. Third Term Examination Schedule & Guidelines"
+                    className="w-full px-3 py-2 border rounded-xl outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block mb-1 font-bold text-slate-900">Category</label>
+                    <select
+                      value={newNotice.category}
+                      onChange={(e) => setNewNotice({ ...newNotice, category: e.target.value })}
+                      className="w-full px-3 py-2 border rounded-xl outline-none focus:ring-2 focus:ring-amber-500"
+                    >
+                      <option value="Examinations">Examinations</option>
+                      <option value="Circular">Circular</option>
+                      <option value="Academic">Academic</option>
+                      <option value="Admissions">Admissions</option>
+                      <option value="Sports">Sports</option>
+                      <option value="Achievements">Achievements</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block mb-1 font-bold text-slate-900">Notice Type</label>
+                    <select
+                      value={newNotice.type}
+                      onChange={(e) => setNewNotice({ ...newNotice, type: e.target.value })}
+                      className="w-full px-3 py-2 border rounded-xl outline-none focus:ring-2 focus:ring-amber-500"
+                    >
+                      <option value="Notice">Notice</option>
+                      <option value="Circular">Circular</option>
+                      <option value="Event">Event</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block mb-1 font-bold text-slate-900">Issuing Authority / Posted By</label>
+                  <input
+                    type="text"
+                    value={newNotice.postedBy}
+                    onChange={(e) => setNewNotice({ ...newNotice, postedBy: e.target.value })}
+                    placeholder="e.g. Academic Branch, Wesley High School"
+                    className="w-full px-3 py-2 border rounded-xl outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block mb-1 font-bold text-slate-900">Notice Content / Description *</label>
+                  <textarea
+                    required
+                    rows={4}
+                    value={newNotice.description}
+                    onChange={(e) => setNewNotice({ ...newNotice, description: e.target.value })}
+                    placeholder="Enter full notice announcement details..."
+                    className="w-full px-3 py-2 border rounded-xl outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block mb-1 font-bold text-slate-900">Attached PDF Filename (Optional)</label>
+                  <input
+                    type="text"
+                    value={newNotice.pdfFileName}
+                    onChange={(e) => setNewNotice({ ...newNotice, pdfFileName: e.target.value })}
+                    placeholder="e.g. Third_Term_Exam_Schedule_2025.pdf"
+                    className="w-full px-3 py-2 border rounded-xl outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
+
+                <div className="flex items-center gap-2 pt-1">
+                  <input
+                    type="checkbox"
+                    id="urgentCheck"
+                    checked={newNotice.urgent}
+                    onChange={(e) => setNewNotice({ ...newNotice, urgent: e.target.checked })}
+                    className="w-4 h-4 text-amber-600 rounded"
+                  />
+                  <label htmlFor="urgentCheck" className="text-xs font-semibold text-red-600 cursor-pointer">
+                    Flag as Urgent / High Priority Notice
+                  </label>
+                </div>
+
+                <div className="flex items-center justify-end gap-3 pt-3 border-t">
+                  <button
+                    type="button"
+                    onClick={() => setIsUploadModalOpen(false)}
+                    className="px-4 py-2 border rounded-xl text-slate-700 font-semibold hover:bg-slate-50 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={submittingNotice}
+                    className="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl transition-colors disabled:opacity-50 flex items-center gap-2"
+                  >
+                    {submittingNotice ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                    <span>Publish Notice</span>
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       )}

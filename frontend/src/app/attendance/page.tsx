@@ -101,15 +101,15 @@ export default function AttendancePage() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-3">
               <CalendarCheck className="text-indigo-600 h-8 w-8" />
-              Attendance Marking
+              Classroom Attendance (Staff & Teacher Portal)
             </h1>
-            <p className="text-gray-500 mt-1">Select a class and date to mark student attendance.</p>
+            <p className="text-gray-500 mt-1">Daily classroom attendance registry for teachers and faculty section heads.</p>
           </div>
           <div className="flex gap-3">
-             <Link href="/" className="bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 px-4 py-2.5 rounded-lg font-medium transition-all shadow-sm">
-              Back to Home
+             <Link href="/dashboard" className="bg-white text-gray-700 border border-gray-300 hover:border-amber-400 hover:text-amber-700 px-4 py-2.5 rounded-xl font-semibold text-xs transition-all shadow-sm flex items-center gap-2">
+              &larr; Back to Staff & Teacher Portal
             </Link>
           </div>
         </div>

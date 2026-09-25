@@ -216,10 +216,17 @@ export default function TimetablePage() {
           <div>
             <div className="flex items-center gap-3 mb-2">
               <Link
-                href="/"
+                href="/dashboard"
                 className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-400 hover:text-amber-300 transition-colors"
               >
-                <ChevronLeft className="w-4 h-4" /> {t("navHome")}
+                <ChevronLeft className="w-4 h-4" /> Staff & Teacher Portal
+              </Link>
+              <span className="text-slate-600">•</span>
+              <Link
+                href="/"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-white transition-colors"
+              >
+                {t("navHome")}
               </Link>
               <span className="text-slate-600">•</span>
               <span className="text-xs text-amber-300/80 font-medium tracking-wider uppercase">
